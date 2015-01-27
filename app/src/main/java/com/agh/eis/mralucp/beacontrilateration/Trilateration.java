@@ -3,6 +3,9 @@ package com.agh.eis.mralucp.beacontrilateration;
 /**
  * Created by Lucp on 2015-01-27.
  */
+
+//komentarz
+
 public class Trilateration {
 
     public class Point{

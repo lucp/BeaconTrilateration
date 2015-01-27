@@ -1,6 +1,7 @@
 package com.agh.eis.mralucp.beacontrilateration;
 
 import java.util.LinkedList;
+//komentarz
 
 /**
  * Created by Lucp on 2015-01-27.
