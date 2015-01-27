@@ -9,7 +9,7 @@ public class DistanceRSSIConverter {
     private static double n = 2.2;
 
     public static double convertDistance(int rssi){
-        double dis = Math.pow(10, ((A-(double)rssi)/10*n));
+        double dis = Math.pow(10, ((A-(double)rssi)/(double)(10*n)));
         return dis;
     }
 
