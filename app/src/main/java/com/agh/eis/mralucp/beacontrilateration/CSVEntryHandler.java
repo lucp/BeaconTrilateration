@@ -1,4 +1,4 @@
-package com.example.mralucp.beacontrilateration;
+package com.agh.eis.mralucp.beacontrilateration;
 
 import java.util.LinkedList;
 
