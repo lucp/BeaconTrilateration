@@ -37,7 +37,13 @@ public class Trilateration {
         double vb = (double)((rb*rb-ra*ra)-(xb*xb-xa*xa)-(yb*yb-ya*ya))/2;
 
         double y = (vb*(xc*xb)-va*(xa-xb))/((ya-yb)*(xc-xb)-(yc-yb)*(xa-xb));
-        double x = (va-y*(yc-yb))/(xc-xb);
+        double x;
+        if((xc-xb)!=0){
+            x = (va-y*(yc-yb))/(xc-xb);
+        }
+        else{
+            x = (vb-y*(ya-yb))/(xa-xb);
+        }
 
         return new Point(x,y);
     }
