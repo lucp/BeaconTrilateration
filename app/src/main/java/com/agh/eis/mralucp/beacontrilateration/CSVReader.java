@@ -13,13 +13,8 @@ import java.util.LinkedList;
 public class CSVReader {
 
 
-    LinkedList<CSVEntry> entries;
-
-    public CSVReader(){
-        this.entries = new LinkedList<CSVEntry>();
-    }
-
-    public void readCSV(String path){
+    public static LinkedList<CSVEntry> readCSV(String path) {
+        LinkedList<CSVEntry> entries = new LinkedList<CSVEntry>();
         BufferedReader br = null;
         String line = "";
         String cvsSplitBy = ",";
@@ -30,7 +25,7 @@ public class CSVReader {
 
                 String[] lineRead = line.split(cvsSplitBy);
 
-                this.entries.add(new CSVEntry(Long.valueOf(lineRead[0]),Integer.valueOf(lineRead[1])));
+                entries.add(new CSVEntry(Long.valueOf(lineRead[0]), Integer.valueOf(lineRead[1])));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -45,7 +40,6 @@ public class CSVReader {
                 }
             }
         }
+        return entries;
     }
-
-
 }
