@@ -1,6 +1,9 @@
 package com.agh.eis.mralucp.beacontrilateration;
 
+import android.util.Pair;
+
 import java.util.LinkedList;
+import java.util.Map;
 //komentarz
 
 /**

@@ -24,6 +24,14 @@ public class Beacon {
         this.signalHistory = new LinkedList<CSVEntry>();
     }
 
+    public Beacon(String id, double positionX, double positionY, String filePath) {
+        this.id = id;
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.currentSignal = null;
+        this.signalHistory = CSVReader.readCSV(filePath);
+    }
+
     public LinkedList<CSVEntry> addSignalToHistory(CSVEntry entry) {
         this.signalHistory.add(entry);
         return this.signalHistory;
