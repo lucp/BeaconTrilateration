@@ -2,6 +2,7 @@ package com.agh.eis.mralucp.beacontrilateration;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
@@ -16,8 +17,16 @@ public class EvaluationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        this.mDataReceiver = new DataReceiver();
+        this.mDataReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent){
+                returnRSSI(intent.getIntExtra("RSSI", 0));
+            }
+        };
         this.registerReceiver(this.mDataReceiver, new IntentFilter("com.aware.plugin.beacons.SCAN_RESULT_ACTION"));
+    }
+
+    private void returnRSSI(int rssi) {
     }
 
     @Override
