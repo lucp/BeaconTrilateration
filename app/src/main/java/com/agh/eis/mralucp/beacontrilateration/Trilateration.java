@@ -8,7 +8,7 @@ package com.agh.eis.mralucp.beacontrilateration;
 
 public class Trilateration {
 
-    public class Point{
+    public static class Point{
         double x;
         double y;
 
@@ -31,7 +31,7 @@ public class Trilateration {
      * @param rc - radius of C
      * @return coordinates of point
      */
-    public Point evaluateCoordinates(double xa,double ya, double xb, double yb, double xc, double yc, double ra, double rb, double rc){
+    public static Point evaluateCoordinates(double xa,double ya, double xb, double yb, double xc, double yc, double ra, double rb, double rc){
 
         double va = (double)((rb*rb - rc*rc)-(xb*xb-xc*xc)-(yb*yb-yc*yc))/2;
         double vb = (double)((rb*rb-ra*ra)-(xb*xb-xa*xa)-(yb*yb-ya*ya))/2;
