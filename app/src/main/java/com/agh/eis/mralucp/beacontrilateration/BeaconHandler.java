@@ -9,21 +9,21 @@ import java.util.LinkedList;
  */
 public class BeaconHandler {
 
-    public static Pair<Beacon, CSVEntry> getClosestTimestampBeacon(CSVEntry referenceEntry, Beacon compareBeacon) {
-        return new Pair<Beacon, CSVEntry>(compareBeacon, CSVEntryHandler.getClosestTimestampCSVEntry(referenceEntry, compareBeacon.getSignalHistory()));
+    public static Signal getClosestTimestampBeacon(CSVEntry referenceEntry, Beacon compareBeacon) {
+        return new Signal(compareBeacon, CSVEntryHandler.getClosestTimestampCSVEntry(referenceEntry, compareBeacon.getSignalHistory()));
     }
 
-    public static LinkedList<Pair<Beacon, CSVEntry>> getThreeBestRSSIBeacons(LinkedList<Pair<Beacon, CSVEntry>> beaconEntries) {
+    public static LinkedList<Signal> getThreeBestRSSIBeacons(LinkedList<Signal> beaconEntries) {
         LinkedList<CSVEntry> entries = new LinkedList<CSVEntry>();
-        for (Pair<Beacon, CSVEntry> pair : beaconEntries) {
-            entries.add(pair.second);
+        for (Signal signal : beaconEntries) {
+            entries.add(signal.getEntry());
         }
         LinkedList<CSVEntry> bestThreeEntries = CSVEntryHandler.getThreeBestRSSI(entries);
-        LinkedList<Pair<Beacon, CSVEntry>> bestThreeBeacons = new LinkedList<Pair<Beacon, CSVEntry>>();
+        LinkedList<Signal> bestThreeBeacons = new LinkedList<Signal>();
         for (CSVEntry entry : bestThreeEntries) {
-            for (Pair<Beacon, CSVEntry> beaconPair : beaconEntries) {
-                if (beaconPair.second == entry) {
-                    bestThreeBeacons.add(beaconPair);
+            for (Signal beaconSignal : beaconEntries) {
+                if (beaconSignal.getEntry() == entry) {
+                    bestThreeBeacons.add(beaconSignal);
                 }
             }
         }
