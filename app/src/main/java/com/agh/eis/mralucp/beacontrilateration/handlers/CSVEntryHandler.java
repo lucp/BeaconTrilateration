@@ -1,9 +1,8 @@
-package com.agh.eis.mralucp.beacontrilateration;
+package com.agh.eis.mralucp.beacontrilateration.handlers;
 
-import android.util.Pair;
+import com.agh.eis.mralucp.beacontrilateration.model.CSVEntry;
 
 import java.util.LinkedList;
-import java.util.Map;
 //komentarz
 
 /**

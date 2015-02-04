@@ -1,4 +1,4 @@
-package com.agh.eis.mralucp.beacontrilateration;
+package com.agh.eis.mralucp.beacontrilateration.model;
 
 /**
  * Created by Lucp on 2015-01-27.

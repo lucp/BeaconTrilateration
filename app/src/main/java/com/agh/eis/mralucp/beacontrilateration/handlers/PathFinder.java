@@ -1,6 +1,10 @@
-package com.agh.eis.mralucp.beacontrilateration;
+package com.agh.eis.mralucp.beacontrilateration.handlers;
 
-import android.util.Pair;
+import com.agh.eis.mralucp.beacontrilateration.Trilateration;
+import com.agh.eis.mralucp.beacontrilateration.model.Beacon;
+import com.agh.eis.mralucp.beacontrilateration.model.CSVEntry;
+import com.agh.eis.mralucp.beacontrilateration.model.Point;
+import com.agh.eis.mralucp.beacontrilateration.model.Signal;
 
 import java.util.LinkedList;
 
@@ -9,8 +13,8 @@ import java.util.LinkedList;
  */
 public class PathFinder {
 
-    public static LinkedList<Trilateration.Point> findPath(LinkedList<Beacon> beacons, Beacon referenceBeacon) {
-        LinkedList<Trilateration.Point> points = new LinkedList<Trilateration.Point>();
+    public static LinkedList<Point> findPath(LinkedList<Beacon> beacons, Beacon referenceBeacon) {
+        LinkedList<Point> points = new LinkedList<Point>();
         for (CSVEntry csvEntry : referenceBeacon.getSignalHistory()) {
             LinkedList<Signal> signals = new LinkedList<Signal>();
             signals.add(new Signal(referenceBeacon, csvEntry));

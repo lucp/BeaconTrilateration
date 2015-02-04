@@ -1,4 +1,6 @@
-package com.agh.eis.mralucp.beacontrilateration;
+package com.agh.eis.mralucp.beacontrilateration.handlers;
+
+import com.agh.eis.mralucp.beacontrilateration.model.CSVEntry;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -11,7 +13,6 @@ import java.util.LinkedList;
  * Created by Lucp on 2015-01-27.
  */
 public class CSVReader {
-
 
     public static LinkedList<CSVEntry> readCSV(String path) {
         LinkedList<CSVEntry> entries = new LinkedList<CSVEntry>();

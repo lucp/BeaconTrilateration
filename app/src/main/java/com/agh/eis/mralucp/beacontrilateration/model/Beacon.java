@@ -1,4 +1,6 @@
-package com.agh.eis.mralucp.beacontrilateration;
+package com.agh.eis.mralucp.beacontrilateration.model;
+
+import com.agh.eis.mralucp.beacontrilateration.handlers.CSVReader;
 
 import java.util.LinkedList;
 
@@ -32,7 +34,7 @@ public class Beacon {
         this.signalHistory = CSVReader.readCSV(filePath);
     }
 
-    public LinkedList<CSVEntry> addSignalToHistory(CSVEntry entry) {
+    public LinkedList<CSVEntry> addSignalToHistory(CSVEntry entry) { //TODO remove entries if size > buffer
         this.signalHistory.add(entry);
         return this.signalHistory;
     }
