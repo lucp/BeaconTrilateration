@@ -4,9 +4,23 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".BeaconTrilaterationActivity">
+    tools:context=".BeaconTrilaterationActivity"
+    android:id="@+id/relativelayoutid"
+    android:nestedScrollingEnabled="false">
 
     <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/textView" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show path"
+        android:id="@+id/show_path_button"
+        android:layout_marginTop="88dp"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:onClick="onShowPathButtonClick"
+        android:nestedScrollingEnabled="true" />
 
 </RelativeLayout>

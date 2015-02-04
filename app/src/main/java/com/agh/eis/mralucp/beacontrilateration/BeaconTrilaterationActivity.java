@@ -4,16 +4,20 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 //komentarz
 
 public class BeaconTrilaterationActivity extends ActionBarActivity {
+
+    private Button showPathButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beacon_trilateration);
+        this.showPathButton = (Button) findViewById(R.id.show_path_button);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -35,5 +39,9 @@ public class BeaconTrilaterationActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onShowPathButtonClick(View view){
+
     }
 }
