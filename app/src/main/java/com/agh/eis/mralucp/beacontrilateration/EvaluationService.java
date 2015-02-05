@@ -51,7 +51,7 @@ public class EvaluationService extends Service {
         this.mDataReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent){
-                double signal  = returnRSSI(intent.getIntExtra("RSSI", 0));
+                double signal  = returnRSSI(intent.getDoubleExtra("RSSI", 0.0));
 //                Object beaconUID = intent.getSerializableExtra("UUID");
 //                Beacon beacon = findBeacon(beaconUID);
 //                if(beacon!=null){
@@ -70,7 +70,7 @@ public class EvaluationService extends Service {
 //                zwraca punkt lub nulla
         return null;
     }
-    private double returnRSSI(int rssi) {
+    private double returnRSSI(double rssi) {
         return DistanceRSSIConverter.convertDistance(rssi);
     }
 

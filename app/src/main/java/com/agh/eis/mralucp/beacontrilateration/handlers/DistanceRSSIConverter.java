@@ -15,5 +15,8 @@ public class DistanceRSSIConverter {
         return dis;
     }
 
-
+    public static double convertDistance(double rssi){
+        double dis = Math.pow(10, ((A-(double)rssi)/(double)(10*n)));
+        return dis;
+    }
 }
