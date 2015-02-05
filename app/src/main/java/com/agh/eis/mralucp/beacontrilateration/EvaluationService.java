@@ -10,7 +10,9 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.agh.eis.mralucp.beacontrilateration.handlers.BeaconHandler;
 import com.agh.eis.mralucp.beacontrilateration.handlers.DistanceRSSIConverter;
+import com.agh.eis.mralucp.beacontrilateration.handlers.PathFinder;
 import com.agh.eis.mralucp.beacontrilateration.model.Beacon;
 import com.agh.eis.mralucp.beacontrilateration.model.CSVEntry;
 import com.agh.eis.mralucp.beacontrilateration.model.Point;
@@ -61,6 +63,9 @@ public class EvaluationService extends Service {
                 Beacon beacon = getBeaconById(id);
                 if (beacon != null) {
                     beacon.setCurrentSignalAndAddToHistory(new CSVEntry(System.currentTimeMillis(), (int)rssi));
+                }
+                if (BeaconHandler.getActiveBeaconsNumber(beacons) >= 3) {
+                    System.out.println(PathFinder.findPoint(beacons));
                 }
 //                Object beaconUID = intent.getSerializableExtra("UUID");
 //                Beacon beacon = findBeacon(beaconUID);
