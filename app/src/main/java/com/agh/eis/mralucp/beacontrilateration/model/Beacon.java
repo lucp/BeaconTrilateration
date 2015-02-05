@@ -9,7 +9,7 @@ import java.util.LinkedList;
  */
 public class Beacon {
 
-    private String id;
+    private long id;
 
     private double positionX;
     private double positionY;
@@ -18,7 +18,7 @@ public class Beacon {
     private LinkedList<CSVEntry> signalHistory;
     private static int bufferSize = 10000;
 
-    public Beacon(String id, double positionX, double positionY) {
+    public Beacon(long id, double positionX, double positionY) {
         this.id = id;
         this.positionX = positionX;
         this.positionY = positionY;
@@ -26,7 +26,7 @@ public class Beacon {
         this.signalHistory = new LinkedList<CSVEntry>();
     }
 
-    public Beacon(String id, double positionX, double positionY, String filePath) {
+    public Beacon(long id, double positionX, double positionY, String filePath) {
         this.id = id;
         this.positionX = positionX;
         this.positionY = positionY;
@@ -34,16 +34,19 @@ public class Beacon {
         this.signalHistory = CSVReader.readCSV(filePath);
     }
 
-    public LinkedList<CSVEntry> addSignalToHistory(CSVEntry entry) { //TODO remove entries if size > buffer
+    public LinkedList<CSVEntry> addSignalToHistory(CSVEntry entry) {
+        if (this.signalHistory.size() > Beacon.bufferSize) {
+            this.signalHistory.removeFirst();
+        }
         this.signalHistory.add(entry);
         return this.signalHistory;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -69,6 +72,11 @@ public class Beacon {
 
     public void setCurrentSignal(CSVEntry currentSignal) {
         this.currentSignal = currentSignal;
+    }
+
+    public void setCurrentSignalAndAddToHistory(CSVEntry currentSignal) {
+        this.currentSignal = currentSignal;
+        this.addSignalToHistory(currentSignal);
     }
 
     public LinkedList<CSVEntry> getSignalHistory() {

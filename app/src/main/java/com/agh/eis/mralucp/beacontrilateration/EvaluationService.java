@@ -12,7 +12,10 @@ import android.widget.Toast;
 
 import com.agh.eis.mralucp.beacontrilateration.handlers.DistanceRSSIConverter;
 import com.agh.eis.mralucp.beacontrilateration.model.Beacon;
+import com.agh.eis.mralucp.beacontrilateration.model.CSVEntry;
 import com.agh.eis.mralucp.beacontrilateration.model.Point;
+
+import java.util.LinkedList;
 
 public class EvaluationService extends Service {
 
@@ -21,6 +24,7 @@ public class EvaluationService extends Service {
     private long date;
     private BroadcastReceiver mDataReceiver;
     private static boolean isRunning = false;
+    private LinkedList<Beacon> beacons;
 
     public static boolean isRunning()
     {
@@ -48,10 +52,16 @@ public class EvaluationService extends Service {
         super.onCreate();
         Log.d(TAG, "onCreate");
 
+        this.beacons = new LinkedList<Beacon>();
         this.mDataReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent){
-                double signal  = returnRSSI(intent.getDoubleExtra("RSSI", 0.0));
+                double rssi  = returnRSSI(intent.getDoubleExtra("RSSI", 0.0));
+                long id = 0; //TODO return id value from intent broadcast
+                Beacon beacon = getBeaconById(id);
+                if (beacon != null) {
+                    beacon.setCurrentSignalAndAddToHistory(new CSVEntry(System.currentTimeMillis(), (int)rssi));
+                }
 //                Object beaconUID = intent.getSerializableExtra("UUID");
 //                Beacon beacon = findBeacon(beaconUID);
 //                if(beacon!=null){
@@ -70,10 +80,24 @@ public class EvaluationService extends Service {
 //                zwraca punkt lub nulla
         return null;
     }
+
+    private boolean containsBeaconById(long id) {
+        for (Beacon beacon : this.beacons) {
+            if (beacon.getId() == id) return true;
+        }
+        return false;
+    }
+
+    private Beacon getBeaconById(long id) {
+        for (Beacon beacon : this.beacons) {
+            if (beacon.getId() == id) return beacon;
+        }
+        return null;
+    }
+
     private double returnRSSI(double rssi) {
         return DistanceRSSIConverter.convertDistance(rssi);
     }
-
 
     @Override
     public void onDestroy() {
@@ -94,5 +118,13 @@ public class EvaluationService extends Service {
         Log.d(TAG, "onUnBind");
 
         return super.onUnbind(intent);
+    }
+
+    public LinkedList<Beacon> getBeacons() {
+        return beacons;
+    }
+
+    public void setBeacons(LinkedList<Beacon> beacons) {
+        this.beacons = beacons;
     }
 }

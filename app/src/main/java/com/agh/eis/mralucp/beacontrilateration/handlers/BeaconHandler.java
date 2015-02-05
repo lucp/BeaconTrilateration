@@ -30,6 +30,14 @@ public class BeaconHandler {
             }
         }
         return bestThreeBeacons;
+    }
+
+    public static int getActiveBeaconsNumber(LinkedList<Beacon> beacons) {
+        int number = 0;
+        for (Beacon beacon : beacons) {
+            if (beacon.getCurrentSignal() != null) number++;
         }
+        return number;
+    }
 
 }
