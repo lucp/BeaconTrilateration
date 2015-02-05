@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.Button;
 
 public class BeaconTrilaterationActivity extends ActionBarActivity {
 
+    private String TAG = "BeaconTrilaterationActivity";
     private Button showPathButton;
 
     EvaluationService mService;
@@ -30,17 +32,43 @@ public class BeaconTrilaterationActivity extends ActionBarActivity {
         }
 
         public void onServiceDisconnected(ComponentName arg0) {
+            mService = null;
             isBound = false;
         }
 
     };
+    void doBindService(boolean start) {
+        Intent intent = new Intent(this, EvaluationService.class);
+        if (start){
+            startService(intent);
+        }
+        bindService(intent, myConnection, Context.BIND_AUTO_CREATE);
 
+        isBound = true;
+    }
+    void doUnbindService(boolean stop) {
+        Log.d(TAG,"unbinding");
+        if (isBound) {
+            // Detach our existing connection.
+            unbindService(myConnection);
+            if (stop)
+                stopService(new Intent(this, EvaluationService.class));
+            isBound = false;
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beacon_trilateration);
-        Intent intent = new Intent(this, EvaluationService.class);
-        bindService(intent, myConnection, Context.BIND_AUTO_CREATE);
+        if (mService.isRunning()) {
+            Log.d(TAG,"running binding");
+            doBindService(false);
+        }
+        else {
+            Log.d(TAG,"starting binding");
+            doBindService(true);
+        }
+        Log.d(TAG,"onCreate");
         this.showPathButton = (Button) findViewById(R.id.show_path_button);
     }
 
@@ -60,7 +88,8 @@ public class BeaconTrilaterationActivity extends ActionBarActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        unbindService(myConnection);
+//        unbindService(myConnection);
+        doUnbindService(false);
     }
 
     @Override
@@ -81,4 +110,6 @@ public class BeaconTrilaterationActivity extends ActionBarActivity {
     public void onShowPathButtonClick(View view){
 
     }
+
+
 }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.agh.eis.mralucp.beacontrilateration.handlers.DistanceRSSIConverter;
@@ -15,9 +16,16 @@ import com.agh.eis.mralucp.beacontrilateration.model.Point;
 
 public class EvaluationService extends Service {
 
+    private String TAG = "EvaluationService";
     private final IBinder myBinder = new MyLocalBinder();
-
+    private long date;
     private BroadcastReceiver mDataReceiver;
+    private static boolean isRunning = false;
+
+    public static boolean isRunning()
+    {
+        return isRunning;
+    }
 
     public class MyLocalBinder extends Binder {
         EvaluationService getService() {
@@ -29,6 +37,8 @@ public class EvaluationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "onStartCommand");
+        this.isRunning = true;
         return Service.START_NOT_STICKY;
 //        return super.onStartCommand(intent, flags, startId);
     }
@@ -36,12 +46,12 @@ public class EvaluationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Toast.makeText(this.getApplicationContext(), "onCreate Service ", Toast.LENGTH_LONG);//+signal+" "+obj, Toast.LENGTH_LONG);
+        Log.d(TAG, "onCreate");
 
         this.mDataReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent){
-//                int signal  = returnRSSI(intent.getIntExtra("RSSI", 0));
+                double signal  = returnRSSI(intent.getIntExtra("RSSI", 0));
 //                Object beaconUID = intent.getSerializableExtra("UUID");
 //                Beacon beacon = findBeacon(beaconUID);
 //                if(beacon!=null){
@@ -64,19 +74,24 @@ public class EvaluationService extends Service {
         return DistanceRSSIConverter.convertDistance(rssi);
     }
 
+
     @Override
     public void onDestroy() {
+        this.isRunning=false;
+        Log.d(TAG, "onDestroy");
         unregisterReceiver(mDataReceiver);
         super.onDestroy();
     }
 
     @Override
     public IBinder onBind(Intent intent) {
+        Log.d(TAG, "onBind");
         return myBinder;
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
+        Log.d(TAG, "onUnBind");
 
         return super.onUnbind(intent);
     }
