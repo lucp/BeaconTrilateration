@@ -108,8 +108,11 @@ public class BeaconTrilaterationActivity extends ActionBarActivity {
     }
 
     public void onShowPathButtonClick(View view){
-
     }
 
+    public void onURHereClick(View view){
+        Intent intent = new Intent(this, URHereActivity.class);
+        startActivity(intent);
+    }
 
 }
