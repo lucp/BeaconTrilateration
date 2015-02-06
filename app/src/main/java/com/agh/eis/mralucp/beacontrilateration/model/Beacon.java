@@ -3,13 +3,14 @@ package com.agh.eis.mralucp.beacontrilateration.model;
 import com.agh.eis.mralucp.beacontrilateration.handlers.CSVReader;
 
 import java.util.LinkedList;
+import java.util.UUID;
 
 /**
  * Created by Lucp on 2015-01-28.
  */
 public class Beacon {
 
-    private long id;
+    private UUID uuid;
 
     private double positionX;
     private double positionY;
@@ -18,16 +19,16 @@ public class Beacon {
     private LinkedList<CSVEntry> signalHistory;
     private static int bufferSize = 10000;
 
-    public Beacon(long id, double positionX, double positionY) {
-        this.id = id;
+    public Beacon(UUID uuid, double positionX, double positionY) {
+        this.uuid= uuid;
         this.positionX = positionX;
         this.positionY = positionY;
         this.currentSignal = null;
         this.signalHistory = new LinkedList<CSVEntry>();
     }
 
-    public Beacon(long id, double positionX, double positionY, String filePath) {
-        this.id = id;
+    public Beacon(UUID uuid, double positionX, double positionY, String filePath) {
+        this.uuid = uuid;
         this.positionX = positionX;
         this.positionY = positionY;
         this.currentSignal = null;
@@ -42,12 +43,12 @@ public class Beacon {
         return this.signalHistory;
     }
 
-    public long getId() {
-        return id;
+    public UUID getUUID() {
+        return uuid;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUUID(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public double getPositionX() {
