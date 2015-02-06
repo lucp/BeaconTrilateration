@@ -69,30 +69,29 @@ public class EvaluationService extends IntentService {
 //        this.isRunning = true;
 
         this.beacons = new LinkedList<Beacon>();
-        this.mDataReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent){
-                double rssi = returnRSSI(intent.getDoubleExtra("RSSI", 0.0));
-                Log.d(TAG, "rssi:" + rssi);
-//                Object rssi = intent.getParcelableExtra("RSSI");
-                long id = 0; //TODO return id value from intent broadcast
-//                Object beaconUID = intent.getSerializableExtra("UUID");
-                Beacon beacon = getBeaconById(id);
-                if (beacon != null) {
-                    beacon.setCurrentSignalAndAddToHistory(new CSVEntry(System.currentTimeMillis(), (int)rssi));
-                }
-                if (BeaconHandler.getActiveBeaconsNumber(beacons) >= 3) {
-                    System.out.println(PathFinder.findPoint(beacons));
-                }
-//                Beacon beacon = findBeacon(beaconUID);
-//                if(beacon!=null){
-//                  beforeTrilateration(beacon, signal);
-//
+//        this.mDataReceiver = new BroadcastReceiver() {
+//            @Override
+//            public void onReceive(Context context, Intent intent){
+//                double rssi = 0;//  = returnRSSI(intent.getDoubleExtra("RSSI", 0.0));
+////                Object rssi = intent.getParcelableExtra("RSSI");
+//                long id = 0; //TODO return id value from intent broadcast
+////                Object beaconUID = intent.getSerializableExtra("UUID");
+//                Beacon beacon = getBeaconById(id);
+//                if (beacon != null) {
+//                    beacon.setCurrentSignalAndAddToHistory(new CSVEntry(System.currentTimeMillis(), (int)rssi));
 //                }
-                Toast.makeText(context, "broadcast ", Toast.LENGTH_LONG);//+signal+" "+obj, Toast.LENGTH_LONG);
-            }
-        };
-        this.registerReceiver(this.mDataReceiver, new IntentFilter("com.aware.plugin.beacons.SCAN_RESULT_ACTION"));
+//                if (BeaconHandler.getActiveBeaconsNumber(beacons) >= 3) {
+//                    System.out.println(PathFinder.findPoint(beacons));
+//                }
+////                Beacon beacon = findBeacon(beaconUID);
+////                if(beacon!=null){
+////                  beforeTrilateration(beacon, signal);
+////
+////                }
+//                Toast.makeText(context, "broadcast ", Toast.LENGTH_LONG);//+signal+" "+obj, Toast.LENGTH_LONG);
+//            }
+//        };
+//        this.registerReceiver(this.mDataReceiver, new IntentFilter("com.aware.plugin.beacons.SCAN_RESULT_ACTION"));
     }
 
     private Point beforeTrilateration(Beacon beacon, double signal){
@@ -140,6 +139,32 @@ public class EvaluationService extends IntentService {
         bundle.putFloat("x",400);
         bundle.putFloat("y",400);
         Log.d(TAG, "onHandleIntent");
+        this.mDataReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent){
+                double rssi = returnRSSI(intent.getDoubleExtra("RSSI", 0.0));
+//                Object rssi = intent.getParcelableExtra("RSSI");
+                long id = 0; //TODO return id value from intent broadcast
+//                Object beaconUID = intent.getSerializableExtra("UUID");
+                Beacon beacon = getBeaconById(id);
+                if (beacon != null) {
+                    beacon.setCurrentSignalAndAddToHistory(new CSVEntry(System.currentTimeMillis(), (int)rssi));
+                }
+                if (BeaconHandler.getActiveBeaconsNumber(beacons) >= 3) {
+                    System.out.println(PathFinder.findPoint(beacons));
+                }
+//                Beacon beacon = findBeacon(beaconUID);
+//                if(beacon!=null){
+//                  beforeTrilateration(beacon, signal);
+//
+//                }
+                Log.d(TAG, "onReceive");
+                Toast.makeText(context, "broadcast ", Toast.LENGTH_LONG);//+signal+" "+obj, Toast.LENGTH_LONG);
+            }
+        };
+        Log.d(TAG, "register");
+        this.registerReceiver(this.mDataReceiver, new IntentFilter("com.aware.plugin.beacons.SCAN_RESULT_ACTION"));
+
 //        bundle.putSerializable("key", "data to send");
 //        ResultReceiver receiver = intent.getParcelableExtra("key");
         ResultReceiver receiver = intent.getParcelableExtra("key");
