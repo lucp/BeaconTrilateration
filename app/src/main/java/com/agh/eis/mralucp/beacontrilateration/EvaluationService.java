@@ -61,6 +61,7 @@ public class EvaluationService extends Service {
                 double rssi = 0;//  = returnRSSI(intent.getDoubleExtra("RSSI", 0.0));
 //                Object rssi = intent.getParcelableExtra("RSSI");
                 long id = 0; //TODO return id value from intent broadcast
+//                Object beaconUID = intent.getSerializableExtra("UUID");
                 Beacon beacon = getBeaconById(id);
                 if (beacon != null) {
                     beacon.setCurrentSignalAndAddToHistory(new CSVEntry(System.currentTimeMillis(), (int)rssi));
@@ -68,7 +69,6 @@ public class EvaluationService extends Service {
                 if (BeaconHandler.getActiveBeaconsNumber(beacons) >= 3) {
                     System.out.println(PathFinder.findPoint(beacons));
                 }
-//                Object beaconUID = intent.getSerializableExtra("UUID");
 //                Beacon beacon = findBeacon(beaconUID);
 //                if(beacon!=null){
 //                  beforeTrilateration(beacon, signal);
