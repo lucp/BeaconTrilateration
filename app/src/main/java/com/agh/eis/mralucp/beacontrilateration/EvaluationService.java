@@ -21,6 +21,7 @@ import com.agh.eis.mralucp.beacontrilateration.model.CSVEntry;
 import com.agh.eis.mralucp.beacontrilateration.model.Point;
 
 import java.util.LinkedList;
+import java.util.UUID;
 
 public class EvaluationService extends Service{//IntentService {
 
@@ -64,11 +65,11 @@ public class EvaluationService extends Service{//IntentService {
         this.mDataReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent){
-                double rssi = returnRSSI(intent.getDoubleExtra("RSSI", 0.0));
-//                Object rssi = intent.getParcelableExtra("RSSI");
-                long id = 0; //TODO return id value from intent broadcast
-//                Object beaconUID = intent.getSerializableExtra("UUID");
-                Beacon beacon = getBeaconById(id);
+                double rssi = returnRSSI(intent.getIntExtra("RSSI", 0));
+                UUID uuid = (UUID) intent.getSerializableExtra("UUID");
+                Log.d(TAG, "rssi:" + rssi);
+                Log.d(TAG, "uuid:" + uuid);
+                Beacon beacon = getBeaconByUUID(uuid);
                 if (beacon != null) {
                     beacon.setCurrentSignalAndAddToHistory(new CSVEntry(System.currentTimeMillis(), (int)rssi));
                 }
@@ -94,16 +95,16 @@ public class EvaluationService extends Service{//IntentService {
         return null;
     }
 
-    private boolean containsBeaconById(long id) {
+    private boolean containsBeaconById(UUID uuid) {
         for (Beacon beacon : this.beacons) {
-            if (beacon.getId() == id) return true;
+            if (beacon.getUUID() == uuid) return true;
         }
         return false;
     }
 
-    private Beacon getBeaconById(long id) {
+    private Beacon getBeaconByUUID(UUID uuid) {
         for (Beacon beacon : this.beacons) {
-            if (beacon.getId() == id) return beacon;
+            if (beacon.getUUID() == uuid) return beacon;
         }
         return null;
     }
