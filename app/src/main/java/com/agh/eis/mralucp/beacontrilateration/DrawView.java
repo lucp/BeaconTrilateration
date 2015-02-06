@@ -47,7 +47,7 @@ public class DrawView extends View {
         paint.setAntiAlias(true);
     }
 
-    private void addPoint(float x, float y) {
+    void addPoint(float x, float y) {
         DrawPoint point = new DrawPoint();
         point.x = x;
         point.y = y;
