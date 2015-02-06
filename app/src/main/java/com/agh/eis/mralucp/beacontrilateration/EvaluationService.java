@@ -65,6 +65,7 @@ public class EvaluationService extends Service{//IntentService {
             @Override
             public void onReceive(Context context, Intent intent){
                 double rssi = returnRSSI(intent.getDoubleExtra("RSSI", 0.0));
+
 //                Object rssi = intent.getParcelableExtra("RSSI");
                 long id = 0; //TODO return id value from intent broadcast
 //                Object beaconUID = intent.getSerializableExtra("UUID");
