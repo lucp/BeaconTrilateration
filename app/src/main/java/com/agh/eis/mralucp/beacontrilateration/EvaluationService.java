@@ -84,7 +84,7 @@ public class EvaluationService extends Service{//IntentService {
             }
         };
                 Log.d(TAG, "before register");
-        this.registerReceiver(this.mDataReceiver, new IntentFilter("com.aware.plugin.beacons.SCAN_RESULT_ACTION"));
+        this.registerReceiver(this.mDataReceiver, new IntentFilter("com.aware.plugin.beacons.SCAN_RESULT_ACTION_PRIM"));
     }
 
     private Point beforeTrilateration(Beacon beacon, double signal){
