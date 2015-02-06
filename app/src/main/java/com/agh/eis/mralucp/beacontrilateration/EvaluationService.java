@@ -1,12 +1,15 @@
 package com.agh.eis.mralucp.beacontrilateration;
 
+import android.app.IntentService;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
+import android.os.ResultReceiver;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,19 +22,28 @@ import com.agh.eis.mralucp.beacontrilateration.model.Point;
 
 import java.util.LinkedList;
 
-public class EvaluationService extends Service {
+public class EvaluationService extends IntentService {
 
     private String TAG = "EvaluationService";
     private final IBinder myBinder = new MyLocalBinder();
     private long date;
     private BroadcastReceiver mDataReceiver;
-    private static boolean isRunning = false;
+//    private static boolean isRunning = false;
     private LinkedList<Beacon> beacons;
 
-    public static boolean isRunning()
-    {
-        return isRunning;
+    /**
+     * Creates an IntentService.  Invoked by your subclass's constructor.
+     *
+     * @param name Used to name the worker thread, important only for debugging.
+     */
+    public EvaluationService(String name) {
+        super(name);
     }
+
+//    public static boolean isRunning()
+//    {
+//        return isRunning;
+//    }
 
     public class MyLocalBinder extends Binder {
         EvaluationService getService() {
@@ -39,20 +51,22 @@ public class EvaluationService extends Service {
         }
     }
     public EvaluationService() {
+        super("EvaluationService");
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand");
-        this.isRunning = true;
-        return Service.START_NOT_STICKY;
-//        return super.onStartCommand(intent, flags, startId);
-    }
+//    @Override
+//    public int onStartCommand(Intent intent, int flags, int startId) {
+//        Log.d(TAG, "onStartCommand");
+//        this.isRunning = true;
+//        return Service.START_NOT_STICKY;
+////        return super.onStartCommand(intent, flags, startId);
+//    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate");
+//        this.isRunning = true;
 
         this.beacons = new LinkedList<Beacon>();
         this.mDataReceiver = new BroadcastReceiver() {
@@ -106,7 +120,7 @@ public class EvaluationService extends Service {
 
     @Override
     public void onDestroy() {
-        this.isRunning=false;
+//        this.isRunning=false;
         Log.d(TAG, "onDestroy");
         unregisterReceiver(mDataReceiver);
         super.onDestroy();
@@ -116,6 +130,18 @@ public class EvaluationService extends Service {
     public IBinder onBind(Intent intent) {
         Log.d(TAG, "onBind");
         return myBinder;
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        Bundle bundle = new Bundle();
+        bundle.putFloat("x",400);
+        bundle.putFloat("y",400);
+        Log.d(TAG, "onHandleIntent");
+//        bundle.putSerializable("key", "data to send");
+//        ResultReceiver receiver = intent.getParcelableExtra("key");
+        ResultReceiver receiver = intent.getParcelableExtra("key");
+        receiver.send(0, bundle);
     }
 
     @Override
@@ -132,4 +158,5 @@ public class EvaluationService extends Service {
     public void setBeacons(LinkedList<Beacon> beacons) {
         this.beacons = beacons;
     }
+
 }
