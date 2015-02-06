@@ -22,28 +22,20 @@ import com.agh.eis.mralucp.beacontrilateration.model.Point;
 
 import java.util.LinkedList;
 
-public class EvaluationService extends IntentService {
+public class EvaluationService extends Service{//IntentService {
 
     private String TAG = "EvaluationService";
     private final IBinder myBinder = new MyLocalBinder();
     private long date;
     private BroadcastReceiver mDataReceiver;
-//    private static boolean isRunning = false;
+    private static boolean isRunning = false;
     private LinkedList<Beacon> beacons;
 
-    /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
-     * @param name Used to name the worker thread, important only for debugging.
-     */
-    public EvaluationService(String name) {
-        super(name);
-    }
 
-//    public static boolean isRunning()
-//    {
-//        return isRunning;
-//    }
+    public static boolean isRunning()
+    {
+        return isRunning;
+    }
 
     public class MyLocalBinder extends Binder {
         EvaluationService getService() {
@@ -51,16 +43,16 @@ public class EvaluationService extends IntentService {
         }
     }
     public EvaluationService() {
-        super("EvaluationService");
+//        super("EvaluationService");
     }
 
-//    @Override
-//    public int onStartCommand(Intent intent, int flags, int startId) {
-//        Log.d(TAG, "onStartCommand");
-//        this.isRunning = true;
-//        return Service.START_NOT_STICKY;
-////        return super.onStartCommand(intent, flags, startId);
-//    }
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "onStartCommand");
+        this.isRunning = true;
+        return Service.START_NOT_STICKY;
+//        return super.onStartCommand(intent, flags, startId);
+    }
 
     @Override
     public void onCreate() {
@@ -69,29 +61,30 @@ public class EvaluationService extends IntentService {
 //        this.isRunning = true;
 
         this.beacons = new LinkedList<Beacon>();
-//        this.mDataReceiver = new BroadcastReceiver() {
-//            @Override
-//            public void onReceive(Context context, Intent intent){
-//                double rssi = 0;//  = returnRSSI(intent.getDoubleExtra("RSSI", 0.0));
-////                Object rssi = intent.getParcelableExtra("RSSI");
-//                long id = 0; //TODO return id value from intent broadcast
-////                Object beaconUID = intent.getSerializableExtra("UUID");
-//                Beacon beacon = getBeaconById(id);
-//                if (beacon != null) {
-//                    beacon.setCurrentSignalAndAddToHistory(new CSVEntry(System.currentTimeMillis(), (int)rssi));
+        this.mDataReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent){
+                double rssi = returnRSSI(intent.getDoubleExtra("RSSI", 0.0));
+//                Object rssi = intent.getParcelableExtra("RSSI");
+                long id = 0; //TODO return id value from intent broadcast
+//                Object beaconUID = intent.getSerializableExtra("UUID");
+                Beacon beacon = getBeaconById(id);
+                if (beacon != null) {
+                    beacon.setCurrentSignalAndAddToHistory(new CSVEntry(System.currentTimeMillis(), (int)rssi));
+                }
+                if (BeaconHandler.getActiveBeaconsNumber(beacons) >= 3) {
+                    System.out.println(PathFinder.findPoint(beacons));
+                }
+//                Beacon beacon = findBeacon(beaconUID);
+//                if(beacon!=null){
+//                  beforeTrilateration(beacon, signal);
+//
 //                }
-//                if (BeaconHandler.getActiveBeaconsNumber(beacons) >= 3) {
-//                    System.out.println(PathFinder.findPoint(beacons));
-//                }
-////                Beacon beacon = findBeacon(beaconUID);
-////                if(beacon!=null){
-////                  beforeTrilateration(beacon, signal);
-////
-////                }
-//                Toast.makeText(context, "broadcast ", Toast.LENGTH_LONG);//+signal+" "+obj, Toast.LENGTH_LONG);
-//            }
-//        };
-//        this.registerReceiver(this.mDataReceiver, new IntentFilter("com.aware.plugin.beacons.SCAN_RESULT_ACTION"));
+                Log.d(TAG, "onReceive");
+            }
+        };
+                Log.d(TAG, "before register");
+        this.registerReceiver(this.mDataReceiver, new IntentFilter("com.aware.plugin.beacons.SCAN_RESULT_ACTION"));
     }
 
     private Point beforeTrilateration(Beacon beacon, double signal){
@@ -133,43 +126,43 @@ public class EvaluationService extends IntentService {
         return myBinder;
     }
 
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        Bundle bundle = new Bundle();
-        bundle.putFloat("x",400);
-        bundle.putFloat("y",400);
-        Log.d(TAG, "onHandleIntent");
-        this.mDataReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent){
-                double rssi = returnRSSI(intent.getDoubleExtra("RSSI", 0.0));
-//                Object rssi = intent.getParcelableExtra("RSSI");
-                long id = 0; //TODO return id value from intent broadcast
-//                Object beaconUID = intent.getSerializableExtra("UUID");
-                Beacon beacon = getBeaconById(id);
-                if (beacon != null) {
-                    beacon.setCurrentSignalAndAddToHistory(new CSVEntry(System.currentTimeMillis(), (int)rssi));
-                }
-                if (BeaconHandler.getActiveBeaconsNumber(beacons) >= 3) {
-                    System.out.println(PathFinder.findPoint(beacons));
-                }
-//                Beacon beacon = findBeacon(beaconUID);
-//                if(beacon!=null){
-//                  beforeTrilateration(beacon, signal);
-//
+//    @Override
+//    protected void onHandleIntent(Intent intent) {
+//        Bundle bundle = new Bundle();
+//        bundle.putFloat("x",400);
+//        bundle.putFloat("y",400);
+//        Log.d(TAG, "onHandleIntent");
+//        this.mDataReceiver = new BroadcastReceiver() {
+//            @Override
+//            public void onReceive(Context context, Intent intent){
+//                double rssi = returnRSSI(intent.getDoubleExtra("RSSI", 0.0));
+////                Object rssi = intent.getParcelableExtra("RSSI");
+//                long id = 0; //TODO return id value from intent broadcast
+////                Object beaconUID = intent.getSerializableExtra("UUID");
+//                Beacon beacon = getBeaconById(id);
+//                if (beacon != null) {
+//                    beacon.setCurrentSignalAndAddToHistory(new CSVEntry(System.currentTimeMillis(), (int)rssi));
 //                }
-                Log.d(TAG, "onReceive");
-                Toast.makeText(context, "broadcast ", Toast.LENGTH_LONG);//+signal+" "+obj, Toast.LENGTH_LONG);
-            }
-        };
-        Log.d(TAG, "register");
-        this.registerReceiver(this.mDataReceiver, new IntentFilter("com.aware.plugin.beacons.SCAN_RESULT_ACTION"));
-
-//        bundle.putSerializable("key", "data to send");
+//                if (BeaconHandler.getActiveBeaconsNumber(beacons) >= 3) {
+//                    System.out.println(PathFinder.findPoint(beacons));
+//                }
+////                Beacon beacon = findBeacon(beaconUID);
+////                if(beacon!=null){
+////                  beforeTrilateration(beacon, signal);
+////
+////                }
+//                Log.d(TAG, "onReceive");
+//                Toast.makeText(context, "broadcast ", Toast.LENGTH_LONG);//+signal+" "+obj, Toast.LENGTH_LONG);
+//            }
+//        };
+//        Log.d(TAG, "register");
+//        this.registerReceiver(this.mDataReceiver, new IntentFilter("com.aware.plugin.beacons.SCAN_RESULT_ACTION"));
+//
+////        bundle.putSerializable("key", "data to send");
+////        ResultReceiver receiver = intent.getParcelableExtra("key");
 //        ResultReceiver receiver = intent.getParcelableExtra("key");
-        ResultReceiver receiver = intent.getParcelableExtra("key");
-        receiver.send(0, bundle);
-    }
+//        receiver.send(0, bundle);
+//    }
 
     @Override
     public boolean onUnbind(Intent intent) {
