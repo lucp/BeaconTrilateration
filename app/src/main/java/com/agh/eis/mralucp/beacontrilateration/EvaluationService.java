@@ -58,7 +58,8 @@ public class EvaluationService extends Service {
         this.mDataReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent){
-                double rssi  = returnRSSI(intent.getDoubleExtra("RSSI", 0.0));
+                double rssi = 0;//  = returnRSSI(intent.getDoubleExtra("RSSI", 0.0));
+//                Object rssi = intent.getParcelableExtra("RSSI");
                 long id = 0; //TODO return id value from intent broadcast
                 Beacon beacon = getBeaconById(id);
                 if (beacon != null) {
