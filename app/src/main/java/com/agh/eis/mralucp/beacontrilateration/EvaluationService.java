@@ -43,6 +43,7 @@ public class EvaluationService extends Service{//IntentService {
             return EvaluationService.this;
         }
     }
+
     public EvaluationService() {
 //        super("EvaluationService");
     }
@@ -62,55 +63,39 @@ public class EvaluationService extends Service{//IntentService {
 //        this.isRunning = true;
 
         this.beacons = new LinkedList<Beacon>();
+        this.loadConfigurationHome(this.beacons);
+
         this.mDataReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent){
-                double rssi = returnRSSI(intent.getIntExtra("RSSI", 0));
-                UUID uuid = (UUID) intent.getSerializableExtra("UUID");
-                Log.d(TAG, "rssi:" + rssi);
-                Log.d(TAG, "uuid:" + uuid);
-                Beacon beacon = getBeaconByUUID(uuid);
+                double rssi = intent.getIntExtra("RSSI", 0);
+//                UUID uuid = (UUID) intent.getSerializableExtra("UUID");
+                int major = intent.getIntExtra("Major", 0);
+                int minor = intent.getIntExtra("Minor", 0);
+//                Log.d(TAG, "rssi:" + rssi);
+//                Log.d(TAG, "major:" + major);
+//                Log.d(TAG, "minor:" + minor);
+                Beacon beacon = getBeaconByMM(major, minor);
                 if (beacon != null) {
+//                    Log.d(TAG, "Found!");
                     beacon.setCurrentSignalAndAddToHistory(new CSVEntry(System.currentTimeMillis(), (int)rssi));
                 }
                 if (BeaconHandler.getActiveBeaconsNumber(beacons) >= 3) {
-                    System.out.println(PathFinder.findPoint(beacons));
+                    Point point = PathFinder.findPoint(beacons);
+                    Log.d(TAG, "Trilateration: " + point);
                 }
-//                Beacon beacon = findBeacon(beaconUID);
-//                if(beacon!=null){
-//                  beforeTrilateration(beacon, signal);
-//
-//                }
-                Log.d(TAG, "onReceive");
             }
         };
-                Log.d(TAG, "before register");
+
+        Log.d(TAG, "before register");
         this.registerReceiver(this.mDataReceiver, new IntentFilter("com.aware.plugin.beacons.SCAN_RESULT_ACTION_PRIM"));
     }
 
-    private Point beforeTrilateration(Beacon beacon, double signal){
-//                dopisanie do historii do beacona
-//                wywolanie funkcji csvhandler
-//                zwraca punkt lub nulla
-        return null;
-    }
-
-    private boolean containsBeaconById(UUID uuid) {
+    private Beacon getBeaconByMM(int major, int minor) {
         for (Beacon beacon : this.beacons) {
-            if (beacon.getUUID() == uuid) return true;
-        }
-        return false;
-    }
-
-    private Beacon getBeaconByUUID(UUID uuid) {
-        for (Beacon beacon : this.beacons) {
-            if (beacon.getUUID() == uuid) return beacon;
+            if (beacon.getMajor() == major && beacon.getMinor() == minor) return beacon;
         }
         return null;
-    }
-
-    private double returnRSSI(double rssi) {
-        return DistanceRSSIConverter.convertDistance(rssi);
     }
 
     @Override
@@ -178,6 +163,12 @@ public class EvaluationService extends Service{//IntentService {
 
     public void setBeacons(LinkedList<Beacon> beacons) {
         this.beacons = beacons;
+    }
+
+    public void loadConfigurationHome(LinkedList<Beacon> target) {
+        target.add(new Beacon(51800, 62059, 0.75, 4.6)); //5Zg6
+        target.add(new Beacon(2068, 37705, 0, 0)); //QBtX
+        target.add(new Beacon(14925, 50618, 2.55, 3.1)); //1RJB
     }
 
 }

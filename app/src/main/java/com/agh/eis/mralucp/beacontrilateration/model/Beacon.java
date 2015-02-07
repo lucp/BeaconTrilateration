@@ -12,31 +12,49 @@ public class Beacon {
 
     private UUID uuid;
 
+    private int major;
+    private int minor;
+
     private double positionX;
     private double positionY;
 
     private CSVEntry currentSignal;
     private LinkedList<CSVEntry> signalHistory;
-    private static int bufferSize = 10000;
+    private static int BUFFER_SIZE = 10000;
 
-    public Beacon(UUID uuid, double positionX, double positionY) {
-        this.uuid= uuid;
+    public Beacon(UUID uuid, int major, int minor, double positionX, double positionY) {
+        this.uuid = uuid;
+        this.major = major;
+        this.minor = minor;
         this.positionX = positionX;
         this.positionY = positionY;
-        this.currentSignal = null;
         this.signalHistory = new LinkedList<CSVEntry>();
     }
 
-    public Beacon(UUID uuid, double positionX, double positionY, String filePath) {
-        this.uuid = uuid;
+    public Beacon(int major, int minor) {
+        this.major = major;
+        this.minor = minor;
+        this.signalHistory = new LinkedList<CSVEntry>();
+    }
+
+    public Beacon(int major, int minor, double positionX, double positionY) {
+        this.major = major;
+        this.minor = minor;
         this.positionX = positionX;
         this.positionY = positionY;
-        this.currentSignal = null;
+        this.signalHistory = new LinkedList<CSVEntry>();
+    }
+
+    public Beacon(int major, int minor, double positionX, double positionY, String filePath) {
+        this.major = major;
+        this.minor = minor;
+        this.positionX = positionX;
+        this.positionY = positionY;
         this.signalHistory = CSVReader.readCSV(filePath);
     }
 
     public LinkedList<CSVEntry> addSignalToHistory(CSVEntry entry) {
-        if (this.signalHistory.size() > Beacon.bufferSize) {
+        if (this.signalHistory.size() > Beacon.BUFFER_SIZE) {
             this.signalHistory.removeFirst();
         }
         this.signalHistory.add(entry);
@@ -49,6 +67,22 @@ public class Beacon {
 
     public void setUUID(UUID uuid) {
         this.uuid = uuid;
+    }
+
+    public int getMajor() {
+        return major;
+    }
+
+    public void setMajor(int major) {
+        this.major = major;
+    }
+
+    public int getMinor() {
+        return minor;
+    }
+
+    public void setMinor(int minor) {
+        this.minor = minor;
     }
 
     public double getPositionX() {
@@ -89,10 +123,16 @@ public class Beacon {
     }
 
     public static int getBufferSize() {
-        return bufferSize;
+        return BUFFER_SIZE;
     }
 
     public static void setBufferSize(int bufferSize) {
-        Beacon.bufferSize = bufferSize;
+        Beacon.BUFFER_SIZE = bufferSize;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (((Beacon)o).getMajor() == this.major && ((Beacon)o).getMinor() == this.minor) return true;
+        else return false;
     }
 }
