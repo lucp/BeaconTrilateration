@@ -1,5 +1,7 @@
 package com.agh.eis.mralucp.beacontrilateration.handlers;
 
+import android.util.Log;
+
 import com.agh.eis.mralucp.beacontrilateration.Trilateration;
 import com.agh.eis.mralucp.beacontrilateration.model.Beacon;
 import com.agh.eis.mralucp.beacontrilateration.model.CSVEntry;
@@ -29,6 +31,7 @@ public class PathFinder {
             double xc = signals.get(2).getBeacon().getPositionX();
             double yc = signals.get(2).getBeacon().getPositionY();
             double rc = DistanceRSSIConverter.convertDistance(signals.get(2).getEntry().getRssi());
+            Log.d("PathFinder", "xa:" + xa + " ya:" + ya + " xb:" + xb + " yb:" + yb + " xc:" + xc + " yc:" + yc + " ra:" + ra + " rb:" + rb + " rc:" + rc);
             return Trilateration.evaluateCoordinates(xa, ya, xb, yb, xc, yc, ra, rb, rc);
         }
         else {

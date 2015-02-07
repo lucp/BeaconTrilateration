@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Messenger;
 import android.os.ResultReceiver;
 import android.util.Log;
 import android.widget.Toast;
@@ -31,7 +32,6 @@ public class EvaluationService extends Service{//IntentService {
     private BroadcastReceiver mDataReceiver;
     private static boolean isRunning = false;
     private LinkedList<Beacon> beacons;
-
 
     public static boolean isRunning()
     {
@@ -69,20 +69,11 @@ public class EvaluationService extends Service{//IntentService {
             @Override
             public void onReceive(Context context, Intent intent){
                 double rssi = intent.getIntExtra("RSSI", 0);
-//                UUID uuid = (UUID) intent.getSerializableExtra("UUID");
                 int major = intent.getIntExtra("Major", 0);
                 int minor = intent.getIntExtra("Minor", 0);
-//                Log.d(TAG, "rssi:" + rssi);
-//                Log.d(TAG, "major:" + major);
-//                Log.d(TAG, "minor:" + minor);
                 Beacon beacon = getBeaconByMM(major, minor);
                 if (beacon != null) {
-//                    Log.d(TAG, "Found!");
                     beacon.setCurrentSignalAndAddToHistory(new CSVEntry(System.currentTimeMillis(), (int)rssi));
-                }
-                if (BeaconHandler.getActiveBeaconsNumber(beacons) >= 3) {
-                    Point point = PathFinder.findPoint(beacons);
-                    Log.d(TAG, "Trilateration: " + point);
                 }
             }
         };
@@ -167,7 +158,7 @@ public class EvaluationService extends Service{//IntentService {
 
     public void loadConfigurationHome(LinkedList<Beacon> target) {
         target.add(new Beacon(51800, 62059, 0.75, 4.6)); //5Zg6
-        target.add(new Beacon(2068, 37705, 0, 0)); //QBtX
+        target.add(new Beacon(2068, 37705, 0.0, 0.0)); //QBtX
         target.add(new Beacon(14925, 50618, 2.55, 3.1)); //1RJB
     }
 
