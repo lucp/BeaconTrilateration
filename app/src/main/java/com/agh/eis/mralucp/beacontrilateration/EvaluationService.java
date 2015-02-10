@@ -166,7 +166,7 @@ public class EvaluationService extends Service{//IntentService {
         target.add(new Beacon("5Zg6", 51800, 62059, 0.0, 0.0)); //5Zg6
         target.add(new Beacon("QBtX", 2068, 37705, 6.0, 0.0)); //QBtX
         target.add(new Beacon("1RJB", 14925, 50618, 0.0, 6.0)); //1RJB
-        target.add(new Beacon("1RJB", 5484 , 63741, 6.0, 6.0)); //Y7qt
+        target.add(new Beacon("Y7qt", 5484 , 63741, 6.0, 6.0)); //Y7qt
     }
 
 }
