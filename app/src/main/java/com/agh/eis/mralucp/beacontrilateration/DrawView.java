@@ -4,9 +4,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +17,27 @@ import java.util.List;
 public class DrawView extends View {
     private static final String TAG = "DrawView";
 
-    List<DrawPoint> points = new ArrayList<DrawPoint>();
-    Paint paint = new Paint();
+    private List<DrawPoint> points = new ArrayList<DrawPoint>();
+    private Paint paint = new Paint();
+
+    private Context context;
+
+    private int width;
+    private int height;
 
     public DrawView(Context context) {
         super(context);
         setFocusable(true);
         setFocusableInTouchMode(true);
+
+        this.context = context;
+
+        WindowManager wm = (WindowManager) this.context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        this.width = size.x;
+        this.height = size.y;
 
 //        this.setOnTouchListener(this);
 //        addPoint(100,50);
@@ -59,6 +76,13 @@ public class DrawView extends View {
     public void onDraw(Canvas canvas) {
         for (DrawPoint point : points) {
             canvas.drawCircle(point.x, point.y, 5, paint);
+        }
+        if (!this.points.isEmpty()) {
+            paint.setColor(Color.BLACK);
+            paint.setTextSize(20);
+            DrawPoint last = this.points.get(this.points.size() - 1);
+            canvas.drawText("x:" + last.x + " y:" + last.y, 20, this.height - 20, paint);
+            paint.setColor(Color.RED);
         }
     }
 
