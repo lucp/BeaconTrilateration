@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.agh.eis.mralucp.beacontrilateration.model.Beacon;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,27 +24,6 @@ public class DrawView extends View {
         setFocusable(true);
         setFocusableInTouchMode(true);
 
-//        this.setOnTouchListener(this);
-//        addPoint(100,50);
-//        addPoint(200,50);
-//        addPoint(300,50);
-//        addPoint(400,50);
-//        addPoint(500,50);
-//        addPoint(600,50);
-//        addPoint(700,50);
-//        addPoint(50,100);
-//        addPoint(50,200);
-//        addPoint(50,300);
-//        addPoint(50,400);
-//        addPoint(50,500);
-//        addPoint(50,600);
-//        addPoint(50,700);
-//        addPoint(50,800);
-//        addPoint(50,900);
-//        addPoint(50,1000);
-//        addPoint(50,1100);
-//        addPoint(50,1200);
-
         paint.setColor(Color.RED);
         paint.setAntiAlias(true);
     }
@@ -55,6 +36,14 @@ public class DrawView extends View {
         invalidate();
     }
 
+    void addBeacon(float x, float y) {
+        paint.setColor(Color.BLACK);
+        DrawPoint point = new DrawPoint();
+        point.x = x;
+        point.y = y;
+        points.add(point);
+        invalidate();
+    }
     @Override
     public void onDraw(Canvas canvas) {
         for (DrawPoint point : points) {
