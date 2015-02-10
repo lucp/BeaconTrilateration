@@ -41,11 +41,12 @@ public class URHereThread implements Runnable {
                 this.startTime = System.currentTimeMillis();
                 beacons = urHereActivity.mService.getBeacons();
                 if (BeaconHandler.getActiveBeaconsNumber(beacons) >= 3) {
+
                     Point point = PathFinder.findPoint(beacons);
 
                     Bundle bundle =new Bundle();
-                    bundle.putFloat("Xcoodinate", (float)point.x);
-                    bundle.putFloat("Ycoodinate", (float)point.y);
+                    bundle.putFloat("Xcoordinate", (float)point.x);
+                    bundle.putFloat("Ycoordinate", (float)point.y);
                     Message msg = new Message();
                     msg.setData(bundle);
                     urHereActivity.mHandler.sendMessage(msg);

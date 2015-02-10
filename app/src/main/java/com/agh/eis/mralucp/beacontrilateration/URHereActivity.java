@@ -50,7 +50,7 @@ public class URHereActivity extends Activity {
             Bundle data = msg.getData();
             float x = data.getFloat("Xcoordinate");
             float y = data.getFloat("Ycoordinate");
-            drawView.addPoint(x*10,y*10);
+            drawView.addPoint(x,y);
         }
     };
 

@@ -157,9 +157,9 @@ public class EvaluationService extends Service{//IntentService {
     }
 
     public void loadConfigurationHome(LinkedList<Beacon> target) {
-        target.add(new Beacon(51800, 62059, 0.75, 4.6)); //5Zg6
-        target.add(new Beacon(2068, 37705, 0.0, 0.0)); //QBtX
-        target.add(new Beacon(14925, 50618, 2.55, 3.1)); //1RJB
+        target.add(new Beacon("5Zg6", 51800, 62059, 0.75, 4.6)); //5Zg6
+        target.add(new Beacon("QBtX", 2068, 37705, 0.0, 0.0)); //QBtX
+        target.add(new Beacon("1RJB", 14925, 50618, 2.75, 4.6)); //1RJB
     }
 
 }

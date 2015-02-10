@@ -25,16 +25,16 @@ public class Trilateration {
      */
     public static Point evaluateCoordinates(double xa,double ya, double xb, double yb, double xc, double yc, double ra, double rb, double rc){
 
-        double va = (double)((rb*rb - rc*rc)-(xb*xb-xc*xc)-(yb*yb-yc*yc))/2;
-        double vb = (double)((rb*rb-ra*ra)-(xb*xb-xa*xa)-(yb*yb-ya*ya))/2;
+        double va = (double)((rb * rb - rc * rc) - (xb * xb - xc * xc) - (yb * yb - yc * yc)) / 2.0;
+        double vb = (double)((rb * rb - ra * ra) - (xb * xb - xa * xa) - (yb * yb - ya * ya)) / 2.0;
 
-        double y = (vb*(xc*xb)-va*(xa-xb))/((ya-yb)*(xc-xb)-(yc-yb)*(xa-xb));
+        double y = (vb * (xc - xb) - va * (xa - xb)) / ((ya - yb) * (xc - xb) - (yc - yb) * (xa - xb));
         double x;
-        if((xc-xb)!=0){
-            x = (va-y*(yc-yb))/(xc-xb);
+        if((xc - xb)!=0){
+            x = (va - y * (yc - yb)) / (xc - xb);
         }
         else{
-            x = (vb-y*(ya-yb))/(xa-xb);
+            x = (vb - y * (ya - yb)) / (xa - xb);
         }
 
         return new Point(x,y);

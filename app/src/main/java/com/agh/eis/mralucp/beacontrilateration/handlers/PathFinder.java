@@ -31,6 +31,7 @@ public class PathFinder {
             double xc = signals.get(2).getBeacon().getPositionX();
             double yc = signals.get(2).getBeacon().getPositionY();
             double rc = DistanceRSSIConverter.convertDistance(signals.get(2).getEntry().getRssi());
+            Log.d("PathFinder", "a:" + signals.get(0).getBeacon().getId() + " b:" + signals.get(1).getBeacon().getId() + " c:" + signals.get(2).getBeacon().getId());
             Log.d("PathFinder", "xa:" + xa + " ya:" + ya + " xb:" + xb + " yb:" + yb + " xc:" + xc + " yc:" + yc + " ra:" + ra + " rb:" + rb + " rc:" + rc);
             return Trilateration.evaluateCoordinates(xa, ya, xb, yb, xc, yc, ra, rb, rc);
         }

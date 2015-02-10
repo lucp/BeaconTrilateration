@@ -10,6 +10,8 @@ import java.util.UUID;
  */
 public class Beacon {
 
+    private String id;
+
     private UUID uuid;
 
     private int major;
@@ -38,6 +40,15 @@ public class Beacon {
     }
 
     public Beacon(int major, int minor, double positionX, double positionY) {
+        this.major = major;
+        this.minor = minor;
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.signalHistory = new LinkedList<CSVEntry>();
+    }
+
+    public Beacon(String id, int major, int minor, double positionX, double positionY) {
+        this.id = id;
         this.major = major;
         this.minor = minor;
         this.positionX = positionX;
@@ -128,6 +139,14 @@ public class Beacon {
 
     public static void setBufferSize(int bufferSize) {
         Beacon.BUFFER_SIZE = bufferSize;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
