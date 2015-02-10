@@ -24,7 +24,7 @@ public class BeaconTrilaterationActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beacon_trilateration);
         Log.d(TAG,"onCreate");
-        this.showPathButton = (Button) findViewById(R.id.show_path_button);
+//        this.showPathButton = (Button) findViewById(R.id.show_path_button);
     }
 
 
