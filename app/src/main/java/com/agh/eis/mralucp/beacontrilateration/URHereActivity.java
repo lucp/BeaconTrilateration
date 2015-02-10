@@ -46,7 +46,6 @@ public class URHereActivity extends Activity {
 
         @Override
         public void handleMessage(Message msg) {
-            super.handleMessage(msg);
             Bundle data = msg.getData();
             float x = data.getFloat("Xcoordinate");
             float y = data.getFloat("Ycoordinate");

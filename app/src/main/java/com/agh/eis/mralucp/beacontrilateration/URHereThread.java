@@ -29,7 +29,6 @@ public class URHereThread implements Runnable {
     private long startTime = 0;
     private long endTime = 0;
     private long waitTime = 1000;
-
     public URHereThread(URHereActivity urHereActivity) {
         this.urHereActivity = urHereActivity;
     }
