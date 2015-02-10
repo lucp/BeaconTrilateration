@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.Parcel;
@@ -40,6 +41,19 @@ public class URHereActivity extends Activity {
 
     URHereThread urHereThread;
 
+
+    Handler mHandler =  new Handler(Looper.getMainLooper()){
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Bundle data = msg.getData();
+            float x = data.getFloat("Xcoordinate");
+            float y = data.getFloat("Ycoordinate");
+            drawView.addPoint(x,y);
+        }
+    };
+
     private ServiceConnection myConnection = new ServiceConnection() {
 
         @Override
@@ -72,6 +86,7 @@ public class URHereActivity extends Activity {
             // Detach our existing connection.
             unbindService(myConnection);
             if (stop)
+                Log.d(TAG, "URHereActivity: stopSerice");
                 stopService(new Intent(this, EvaluationService.class));
             isBound = false;
         }
@@ -99,6 +114,8 @@ public class URHereActivity extends Activity {
         drawView = new DrawView(this);
         setContentView(drawView);
         drawView.requestFocus();
+
+
 //        drawView.addPoint(400,400);
     }
 
@@ -127,3 +144,5 @@ public class URHereActivity extends Activity {
 //    };
 
 }
+
+

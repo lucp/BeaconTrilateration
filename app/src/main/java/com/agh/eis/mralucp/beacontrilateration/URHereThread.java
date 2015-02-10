@@ -1,5 +1,9 @@
 package com.agh.eis.mralucp.beacontrilateration;
 
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 
 import com.agh.eis.mralucp.beacontrilateration.handlers.BeaconHandler;
@@ -20,6 +24,8 @@ public class URHereThread implements Runnable {
 
     volatile boolean finished = false;
 
+    Handler handler;
+
     private long startTime = 0;
     private long endTime = 0;
     private long waitTime = 1000;
@@ -37,7 +43,13 @@ public class URHereThread implements Runnable {
                 if (BeaconHandler.getActiveBeaconsNumber(beacons) >= 3) {
                     Point point = PathFinder.findPoint(beacons);
 
-                    //TODO draw point and text
+                    Bundle bundle =new Bundle();
+                    bundle.putFloat("Xcoodinate", (float)point.x);
+                    bundle.putFloat("Ycoodinate", (float)point.y);
+                    Message msg = new Message();
+                    msg.setData(bundle);
+                    urHereActivity.mHandler.sendMessage(msg);
+
                     Log.d("URHereThread", "Trilateration: " + point);
                 }
                 this.endTime = System.currentTimeMillis();

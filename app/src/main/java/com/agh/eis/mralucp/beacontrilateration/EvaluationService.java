@@ -91,7 +91,7 @@ public class EvaluationService extends Service{//IntentService {
 
     @Override
     public void onDestroy() {
-//        this.isRunning=false;
+        this.isRunning=false;
         Log.d(TAG, "onDestroy");
         unregisterReceiver(mDataReceiver);
         super.onDestroy();
