@@ -14,18 +14,25 @@ import android.view.WindowManager;
 import com.agh.eis.mralucp.beacontrilateration.model.Beacon;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class DrawView extends View {
     private static final String TAG = "DrawView";
 
     private List<DrawPoint> points = new ArrayList<DrawPoint>();
+    private List<DrawPoint> beaconPoints = new ArrayList<DrawPoint>();
     private Paint paint = new Paint();
 
     private Context context;
 
     private int width;
     private int height;
+
+    private double widthRatio;
+    private double heightRatio;
+
+    private final static int MARGIN = 50;
 
     public DrawView(Context context) {
         super(context);
@@ -53,26 +60,57 @@ public class DrawView extends View {
         invalidate();
     }
 
+    void addBeacons(LinkedList<Beacon> beacons) {
+        paint.setColor(Color.BLACK);
+
+        double minWidth = beacons.getFirst().getPositionX();
+        double maxWidth = beacons.getFirst().getPositionX();
+        double minHeight = beacons.getFirst().getPositionY();
+        double maxHeight = beacons.getFirst().getPositionY();
+
+        for (Beacon beacon : beacons) {
+            if (beacon.getPositionX() < minWidth) minWidth = beacon.getPositionX();
+            if (beacon.getPositionX() > maxWidth) maxWidth = beacon.getPositionX();
+            if (beacon.getPositionY() < minHeight) minHeight = beacon.getPositionY();
+            if (beacon.getPositionY() > maxHeight) maxHeight = beacon.getPositionY();
+        }
+
+        this.widthRatio = (double)(width - 2 * MARGIN) / (maxWidth - minWidth);
+        this.heightRatio = (double)(height - 2 * MARGIN) / (maxHeight - minHeight);
+
+        for (Beacon beacon : beacons) {
+            DrawPoint point = new DrawPoint();
+            point.x = (float)beacon.getPositionX();
+            point.y = (float)beacon.getPositionY();
+            points.add(point);
+        }
+        invalidate();
+    }
+
     void addBeacon(float x, float y) {
         paint.setColor(Color.BLACK);
         DrawPoint point = new DrawPoint();
-        point.x = x;
-        point.y = y;
+        point.x = (float)(x * this.widthRatio + MARGIN);
+        point.y = (float)(y * this.heightRatio + MARGIN);
         points.add(point);
         invalidate();
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        for (DrawPoint point : points) {
-            canvas.drawCircle(point.x, point.y, 5, paint);
+        paint.setColor(Color.BLACK);
+        for (DrawPoint point : this.beaconPoints) {
+            canvas.drawCircle((float)(point.x * this.widthRatio + MARGIN), (float)(point.y * this.widthRatio + MARGIN), 5, paint);
+        }
+        paint.setColor(Color.RED);
+        for (DrawPoint point : this.points) {
+            canvas.drawCircle((float)(point.x * this.widthRatio + MARGIN), (float)(point.y * this.widthRatio + MARGIN), 5, paint);
         }
         if (!this.points.isEmpty()) {
             paint.setColor(Color.BLACK);
             paint.setTextSize(20);
             DrawPoint last = this.points.get(this.points.size() - 1);
             canvas.drawText("x:" + last.x + " y:" + last.y, 20, this.height - 20, paint);
-            paint.setColor(Color.RED);
         }
     }
 

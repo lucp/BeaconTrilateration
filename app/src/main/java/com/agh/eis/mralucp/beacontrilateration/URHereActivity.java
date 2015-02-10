@@ -49,9 +49,7 @@ public class URHereActivity extends Activity {
             if(first) {
                 first = false;
                 if (mService != null) {
-                    for (Beacon b : mService.getBeacons()) {
-                        drawView.addBeacon((float) b.getPositionX(), (float) b.getPositionY());
-                    }
+                    drawView.addBeacons(mService.getBeacons());
                 }
             }
             Bundle data = msg.getData();
