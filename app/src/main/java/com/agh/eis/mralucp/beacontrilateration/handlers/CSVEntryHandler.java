@@ -27,6 +27,11 @@ public class CSVEntryHandler {
     }
 
     public static LinkedList<CSVEntry> getThreeBestRSSI(LinkedList<CSVEntry> entries) {
+        for (int i = 0; i < entries.size(); i++) {
+            if (entries.get(i) == null) {
+                entries.remove(i);
+            }
+        }
         int entriesSize = entries.size();
         CSVEntry[] bestThreeTable = new CSVEntry[3];
         LinkedList<CSVEntry> bestThree = new LinkedList<CSVEntry>();

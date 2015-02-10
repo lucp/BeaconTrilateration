@@ -32,7 +32,7 @@ public class DrawView extends View {
     private double widthRatio;
     private double heightRatio;
 
-    private final static int MARGIN = 50;
+    private final static int MARGIN = 100;
 
     public DrawView(Context context) {
         super(context);
@@ -61,8 +61,6 @@ public class DrawView extends View {
     }
 
     void addBeacons(LinkedList<Beacon> beacons) {
-        paint.setColor(Color.BLACK);
-
         double minWidth = beacons.getFirst().getPositionX();
         double maxWidth = beacons.getFirst().getPositionX();
         double minHeight = beacons.getFirst().getPositionY();
@@ -82,7 +80,7 @@ public class DrawView extends View {
             DrawPoint point = new DrawPoint();
             point.x = (float)beacon.getPositionX();
             point.y = (float)beacon.getPositionY();
-            points.add(point);
+            this.beaconPoints.add(point);
         }
         invalidate();
     }
@@ -98,13 +96,16 @@ public class DrawView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
+        double ratio;
+        if (this.widthRatio < this.heightRatio) ratio = this.widthRatio;
+        else ratio = this.heightRatio;
         paint.setColor(Color.BLACK);
         for (DrawPoint point : this.beaconPoints) {
-            canvas.drawCircle((float)(point.x * this.widthRatio + MARGIN), (float)(point.y * this.widthRatio + MARGIN), 5, paint);
+            canvas.drawCircle((float)(point.x * ratio + MARGIN), (float)(point.y * ratio + MARGIN), 10, paint);
         }
         paint.setColor(Color.RED);
         for (DrawPoint point : this.points) {
-            canvas.drawCircle((float)(point.x * this.widthRatio + MARGIN), (float)(point.y * this.widthRatio + MARGIN), 5, paint);
+            canvas.drawCircle((float)(point.x * ratio + MARGIN), (float)(point.y * ratio + MARGIN), 5, paint);
         }
         if (!this.points.isEmpty()) {
             paint.setColor(Color.BLACK);

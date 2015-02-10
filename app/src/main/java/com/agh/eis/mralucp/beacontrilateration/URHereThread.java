@@ -28,7 +28,7 @@ public class URHereThread implements Runnable {
 
     private long startTime = 0;
     private long endTime = 0;
-    private long waitTime = 1000;
+    private long waitTime = 500;
     public URHereThread(URHereActivity urHereActivity) {
         this.urHereActivity = urHereActivity;
     }
@@ -53,8 +53,13 @@ public class URHereThread implements Runnable {
                     Log.d("URHereThread", "Trilateration: " + point);
                 }
                 this.endTime = System.currentTimeMillis();
-                try {Thread.sleep(this.waitTime - (this.endTime - this.startTime));}
-                catch (InterruptedException e) {e.printStackTrace();}
+                if (this.waitTime - (this.endTime - this.startTime) > 0) {
+                    try {
+                        Thread.sleep(this.waitTime - (this.endTime - this.startTime));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }

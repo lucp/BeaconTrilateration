@@ -63,7 +63,8 @@ public class EvaluationService extends Service{//IntentService {
 //        this.isRunning = true;
 
         this.beacons = new LinkedList<Beacon>();
-        this.loadConfigurationHome(this.beacons);
+//        this.loadConfigurationHome(this.beacons);
+        this.load316(this.beacons);
 
         this.mDataReceiver = new BroadcastReceiver() {
             @Override
