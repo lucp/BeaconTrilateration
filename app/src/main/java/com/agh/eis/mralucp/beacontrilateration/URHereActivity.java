@@ -38,7 +38,7 @@ public class URHereActivity extends Activity {
     Intent intent;
     EvaluationService mService;
     boolean isBound = false;
-
+    boolean first = true;
     URHereThread urHereThread;
 
 
@@ -46,11 +46,19 @@ public class URHereActivity extends Activity {
 
         @Override
         public void handleMessage(Message msg) {
+            if(first) {
+                first = false;
+                if (mService != null) {
+                    for (Beacon b : mService.getBeacons()) {
+                        drawView.addBeacon((float) b.getPositionX(), (float) b.getPositionY());
+                    }
+                }
+            }
             Bundle data = msg.getData();
             float x = data.getFloat("Xcoordinate");
             float y = data.getFloat("Ycoordinate");
             drawView.addPoint(x,y);
-        }
+            }
     };
 
     private ServiceConnection myConnection = new ServiceConnection() {
@@ -115,7 +123,10 @@ public class URHereActivity extends Activity {
         drawView.requestFocus();
 
 
-//        drawView.addPoint(400,400);
+//        drawView.addBeacon(EvaluationService.getXbeacon1(),EvaluationService.getYbeacon1());
+//        drawView.addBeacon(EvaluationService.getXbeacon2(),EvaluationService.getYbeacon2());
+//        drawView.addBeacon(EvaluationService.getXbeacon3(),EvaluationService.getYbeacon3());
+
     }
 
     @Override
