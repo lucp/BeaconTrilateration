@@ -46,11 +46,11 @@ public class URHereActivity extends Activity {
 
         @Override
         public void handleMessage(Message msg) {
-            super.handleMessage(msg);
             Bundle data = msg.getData();
             float x = data.getFloat("Xcoordinate");
             float y = data.getFloat("Ycoordinate");
-            drawView.addPoint(x*10,y*10);
+            drawView.addPoint(x,y);
+            super.handleMessage(msg);
         }
     };
 
