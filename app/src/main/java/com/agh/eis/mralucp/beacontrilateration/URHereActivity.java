@@ -30,7 +30,10 @@ import com.agh.eis.mralucp.beacontrilateration.model.Point;
 import java.io.Serializable;
 import java.util.LinkedList;
 
-
+/**
+ *
+ * Drawing activity
+ */
 public class URHereActivity extends Activity {
 
     private String TAG = "URHereActivity";
@@ -88,7 +91,6 @@ public class URHereActivity extends Activity {
     void doUnbindService(boolean stop) {
         Log.d(TAG, "unbinding");
         if (isBound) {
-            // Detach our existing connection.
             unbindService(myConnection);
             if (stop)
                 Log.d(TAG, "URHereActivity: stopSerice");
@@ -100,8 +102,6 @@ public class URHereActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Set full screen view
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         if (mService.isRunning()) {
             Log.d(TAG,"running binding");
@@ -120,36 +120,16 @@ public class URHereActivity extends Activity {
         setContentView(drawView);
         drawView.requestFocus();
 
-
-//        drawView.addBeacon(EvaluationService.getXbeacon1(),EvaluationService.getYbeacon1());
-//        drawView.addBeacon(EvaluationService.getXbeacon2(),EvaluationService.getYbeacon2());
-//        drawView.addBeacon(EvaluationService.getXbeacon3(),EvaluationService.getYbeacon3());
-
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-//        stopService(intent);
 //        unbindService(myConnection);
-        this.urHereThread.finish();
         doUnbindService(true);
+        this.urHereThread.finish();
     }
 
-//    private final ResultReceiver resultReceiver = new ResultReceiver(
-//            new Handler()) {
-//        @SuppressWarnings("unchecked")
-//        @Override
-//        protected void onReceiveResult(int resultCode, Bundle resultData) {
-////            progressBar.setVisibility(View.GONE);
-//            //do functionality
-//            Log.d(TAG, "onReceiveResult");
-//            float x = resultData.getFloat("x");
-//            float y = resultData.getFloat("y");
-//
-//            drawView.addPoint(x,y);
-//        };
-//    };
 
 }
 

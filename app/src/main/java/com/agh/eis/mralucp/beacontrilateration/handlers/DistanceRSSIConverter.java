@@ -3,8 +3,10 @@ package com.agh.eis.mralucp.beacontrilateration.handlers;
 /**
  * Created by Lucp on 2015-01-27.
  */
-//komentarz
 
+/**
+ * Converts RSSI to distance
+ */
 public class DistanceRSSIConverter {
 
     public static final double A = -70;

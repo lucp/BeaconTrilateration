@@ -6,8 +6,9 @@ import com.agh.eis.mralucp.beacontrilateration.model.Point;
  * Created by Lucp on 2015-01-27.
  */
 
-//komentarz
-
+/***
+ * Class used for calculating trilateration from given 3 reference points and 3 distances
+ */
 public class Trilateration {
 
     /***

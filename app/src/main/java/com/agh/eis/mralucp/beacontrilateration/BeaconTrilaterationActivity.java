@@ -12,8 +12,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-//komentarz
 
+/***
+ * Main activity
+ */
 public class BeaconTrilaterationActivity extends ActionBarActivity {
 
     private String TAG = "BeaconTrilaterationActivity";
@@ -24,7 +26,6 @@ public class BeaconTrilaterationActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beacon_trilateration);
         Log.d(TAG,"onCreate");
-//        this.showPathButton = (Button) findViewById(R.id.show_path_button);
     }
 
 

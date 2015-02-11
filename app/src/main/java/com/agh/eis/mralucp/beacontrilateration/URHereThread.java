@@ -16,6 +16,10 @@ import java.util.LinkedList;
 /**
  * Created by Lucp on 2015-02-07.
  */
+
+/**
+ * Thread class used for drawing points from given coordinates (from service)
+ */
 public class URHereThread implements Runnable {
 
     URHereActivity urHereActivity;

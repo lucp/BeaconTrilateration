@@ -9,6 +9,10 @@ import java.util.LinkedList;
 /**
  * Created by Lucp on 2015-01-28.
  */
+
+/**
+ * Class computing 3 best beacon signals
+ */
 public class BeaconHandler {
 
     public static Signal getClosestTimestampBeacon(CSVEntry referenceEntry, Beacon compareBeacon) {

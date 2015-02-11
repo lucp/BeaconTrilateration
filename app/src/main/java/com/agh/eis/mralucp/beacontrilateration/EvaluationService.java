@@ -24,7 +24,10 @@ import com.agh.eis.mralucp.beacontrilateration.model.Point;
 import java.util.LinkedList;
 import java.util.UUID;
 
-public class EvaluationService extends Service{//IntentService {
+/*****
+ * Serive in charge of reciving Broadcast receiver from Beacons app about new RSSI signal
+ */
+public class EvaluationService extends Service{
 
     private String TAG = "EvaluationService";
     private final IBinder myBinder = new MyLocalBinder();
@@ -45,7 +48,6 @@ public class EvaluationService extends Service{//IntentService {
     }
 
     public EvaluationService() {
-//        super("EvaluationService");
     }
 
     @Override
@@ -53,7 +55,6 @@ public class EvaluationService extends Service{//IntentService {
         Log.d(TAG, "onStartCommand");
         this.isRunning = true;
         return Service.START_NOT_STICKY;
-//        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
@@ -104,43 +105,6 @@ public class EvaluationService extends Service{//IntentService {
         return myBinder;
     }
 
-//    @Override
-//    protected void onHandleIntent(Intent intent) {
-//        Bundle bundle = new Bundle();
-//        bundle.putFloat("x",400);
-//        bundle.putFloat("y",400);
-//        Log.d(TAG, "onHandleIntent");
-//        this.mDataReceiver = new BroadcastReceiver() {
-//            @Override
-//            public void onReceive(Context context, Intent intent){
-//                double rssi = returnRSSI(intent.getDoubleExtra("RSSI", 0.0));
-////                Object rssi = intent.getParcelableExtra("RSSI");
-//                long id = 0; //TODO return id value from intent broadcast
-////                Object beaconUID = intent.getSerializableExtra("UUID");
-//                Beacon beacon = getBeaconById(id);
-//                if (beacon != null) {
-//                    beacon.setCurrentSignalAndAddToHistory(new CSVEntry(System.currentTimeMillis(), (int)rssi));
-//                }
-//                if (BeaconHandler.getActiveBeaconsNumber(beacons) >= 3) {
-//                    System.out.println(PathFinder.findPoint(beacons));
-//                }
-////                Beacon beacon = findBeacon(beaconUID);
-////                if(beacon!=null){
-////                  beforeTrilateration(beacon, signal);
-////
-////                }
-//                Log.d(TAG, "onReceive");
-//                Toast.makeText(context, "broadcast ", Toast.LENGTH_LONG);//+signal+" "+obj, Toast.LENGTH_LONG);
-//            }
-//        };
-//        Log.d(TAG, "register");
-//        this.registerReceiver(this.mDataReceiver, new IntentFilter("com.aware.plugin.beacons.SCAN_RESULT_ACTION"));
-//
-////        bundle.putSerializable("key", "data to send");
-////        ResultReceiver receiver = intent.getParcelableExtra("key");
-//        ResultReceiver receiver = intent.getParcelableExtra("key");
-//        receiver.send(0, bundle);
-//    }
 
     @Override
     public boolean onUnbind(Intent intent) {
@@ -157,12 +121,27 @@ public class EvaluationService extends Service{//IntentService {
         this.beacons = beacons;
     }
 
+
+    /***
+     * FRAGMENT TO CHANGE ACCORDING TO CURRENT BEACONS LOCATIONS.
+     */
+
+    /****
+     * Function used to load ids of beacons (name, major, minor) and their location (here - custom location)
+     * @param target
+     */
     public void loadConfigurationHome(LinkedList<Beacon> target) {
         target.add(new Beacon("5Zg6", 51800, 62059, 0.75, 4.6)); //5Zg6
         target.add(new Beacon("QBtX", 2068, 37705, 0.0, 0.0)); //QBtX
         target.add(new Beacon("1RJB", 14925, 50618, 2.75, 4.6)); //1RJB
     }
 
+    /****
+     * Function used to load ids of beacons (name, major, minor) and their location
+     * here - room 316 (8mx6m)  with beacons set in square 6mx6m (coordinates from point 0,0)
+     *
+     * @param target
+     */
     public void load316(LinkedList<Beacon> target) {
         target.add(new Beacon("5Zg6", 51800, 62059, 0.0, 0.0)); //5Zg6
         target.add(new Beacon("QBtX", 2068, 37705, 6.0, 0.0)); //QBtX
